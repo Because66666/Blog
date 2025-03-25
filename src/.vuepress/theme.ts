@@ -22,7 +22,12 @@ export default hopeTheme({
 
   // 侧边栏
   sidebar,
-
+  sidebarSorter: [
+    "readme",         // README 优先
+    "date-desc",         // 日期新的在前
+    "title",      // 标题字母序
+    "filename"           
+  ],
   // 页脚
   footer: "Because的主页",
   displayFooter: true,
@@ -168,7 +173,7 @@ export default hopeTheme({
     // },
 
     components: {
-      components: ["Badge", "VPCard"],
+      components: ["Badge", "VPCard","VidStack"],
     },
 
     icon: {
