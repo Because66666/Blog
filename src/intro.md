@@ -1,9 +1,12 @@
 ---
-icon: circle-info
-cover: /assets/images/c4.png
+icon: laptop-code
+cover: https://img.picui.cn/free/2025/03/25/67e26eabe084e.png
 title: 记录自己曾经走过的路
-author: Because66666
 date: 2025-03-25
+sticky: true
+star: true
+category: 
+- 历史
 ---
 
 # 2022年

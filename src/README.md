@@ -3,7 +3,7 @@ home: true
 layout: BlogHome
 icon: house
 # title: 博客主页
-bgImage: /bg2.jpg
+bgImage: https://img.picui.cn/free/2025/03/25/67e26f454f58e.jpg
 heroText: Because's Blog
 heroFullScreen: true
 tagline: 只要不失去你的崇高，整个世界都会为你敞开。
@@ -25,7 +25,7 @@ projects:
     desc: 个人知乎
     link: https://www.zhihu.com/people/because-54-90
 
-  - icon: 
+  - icon: laptop-code
     name: 长文本超自然合成
     desc: SparkTTS_with_AP_BWE
     link: https://www.bilibili.com/video/BV1q2QoYbEkx
@@ -33,7 +33,7 @@ projects:
   - icon: user-group
     name: 个人项目简介
     desc: 自己涉猎过的那些项目
-    link: /introduction
+    link: /intro
 
 
 footer: 个人博客
