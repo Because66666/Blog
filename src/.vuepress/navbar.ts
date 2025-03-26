@@ -7,6 +7,11 @@ export default navbar([
     link:"/",
   },
   {
+    text:"介绍",
+    icon:"id-card",
+    link:"portfolio"
+  },
+  {
     text:"编程历史",
     icon:"laptop-code",
     link:"/intro",
