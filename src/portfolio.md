@@ -5,7 +5,8 @@ title: 档案主页
 icon: id-card
 welcome: 你好，我叫
 name: 纳西妲
-bgImage: https://img.picui.cn/free/2025/03/26/67e3c6cbd8ee9.png
+bgImage: https://img.picui.cn/free/2025/03/26/67e3ce511035d.png
+bgImageDark: https://img.picui.cn/free/2025/03/26/67e3c6cbd8ee9.png 
 
 titles:
   - 别看我像个孩子
