@@ -17,7 +17,7 @@ export default navbar([
     link: "/music"
   },
   {
-    text:"编程历史",
+    text:"编程",
     icon:"laptop-code",
     link:"/intro",
   },
@@ -25,5 +25,10 @@ export default navbar([
     text: "文章",
     icon: "book",
     link:"/posts/"
+  },
+  {
+    text: "备忘",
+    icon: "record-vinyl",
+    link:"/posts/001"
   }
 ]);

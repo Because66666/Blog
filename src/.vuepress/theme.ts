@@ -1,5 +1,4 @@
 import { hopeTheme } from "vuepress-theme-hope";
-
 import navbar from "./navbar.js";
 import sidebar from "./sidebar.js";
 
@@ -173,12 +172,20 @@ export default hopeTheme({
     // },
 
     components: {
-      components: ["Badge", "VPCard","VidStack", "MusicPlayer"],
+      components: ["Badge", "VPCard","VidStack",'BiliBili'],
     },
 
     icon: {
       prefix: "fa6-solid:",
     },
+
+    // 配置catalog插件
+    // catalog: {
+    //   level: 3,
+    //   index: false,
+    //   // 排除视频文件夹，使其默认不展开
+    //   exclude: ["/videos/"],
+    // },
 
     // 如果你需要 PWA。安装 @vuepress/plugin-pwa 并取消下方注释
     // pwa: {

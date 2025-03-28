@@ -13,13 +13,13 @@ titles:
   - 我比任何一位大人都了解这个世界
   - 所以，我可以用我的知识
   - 换取你路上的见闻吗？
-
+medias: []
 footer: true
 ---
-
+## 初次见面
+<VidStack src="https://uploadstatic.mihoyo.com/ys-obc/2022/11/02/16576950/4d9feb71760c5e8eb5f6c700df12fa0c_6824265537002152805.mp3" title="纳西妲-初次见面" :autoplay="true"/>
 
 ## 介绍
-<VidStack src="https://uploadstatic.mihoyo.com/ys-obc/2022/11/02/16576950/4d9feb71760c5e8eb5f6c700df12fa0c_6824265537002152805.mp3" title="纳西妲-初次见面" />
 世上每一个小小的生灵，都应当拥有一片乐土。
 草木扎根于无垠之中，叶梢朝向繁星生长。
 直到枝头结出果实，果实中包含天空与海洋、智慧与畅想。

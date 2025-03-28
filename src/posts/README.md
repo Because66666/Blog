@@ -4,4 +4,6 @@ index: true
 icon: laptop-code
 ---
 
-<Catalog />
+<div class="catalog-display-container">
+  <Catalog base='/posts/' />
+</div>

@@ -19,7 +19,14 @@ export default sidebar({
       link: "/music",
     },
     {
-      text:"编程历史",
+      text: "视频",
+      icon: "video",
+      prefix: "videos/",
+      link: "videos/",
+      children: "structure",
+    },
+    {
+      text:"编程",
       icon:"laptop-code",
       link:"/intro",
     },
