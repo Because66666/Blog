@@ -2,13 +2,12 @@
 home: true
 layout: BlogHome
 icon: house
-# title: 博客主页
+title: 博客
 bgImage: https://img.picui.cn/free/2025/03/25/67e26f454f58e.jpg
 heroText: Because's Blog
 heroFullScreen: true
-tagline: 只要不失去你的崇高，整个世界都会为你敞开。
-titles:
-  - 我们的目标是星辰大海。
+tagline: 
+ - 只要不失去你的崇高，整个世界都会为你敞开。
 projects:
 
   - icon: id-card
