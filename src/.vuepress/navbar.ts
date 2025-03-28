@@ -20,5 +20,10 @@ export default navbar([
     text: "文章",
     icon: "book",
     link:"/posts/"
+  },
+  {
+    text: "音乐",
+    icon: "music",
+    link: "/music"
   }
 ]);

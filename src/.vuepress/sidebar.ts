@@ -25,5 +25,10 @@ export default sidebar({
       link: "posts/",
       children: "structure",
     },
+    {
+      text: "音乐",
+      icon: "music",
+      link: "/music",
+    },
   ],
 });

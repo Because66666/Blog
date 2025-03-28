@@ -173,7 +173,7 @@ export default hopeTheme({
     // },
 
     components: {
-      components: ["Badge", "VPCard","VidStack"],
+      components: ["Badge", "VPCard","VidStack", "MusicPlayer"],
     },
 
     icon: {
