@@ -1,3 +1,6 @@
+import fs from 'fs';
+import path from 'path';
+
 interface MusicItem {
   name: string;
   artist: string;
@@ -81,80 +84,114 @@ function beautifyTitle(filename: string): string {
   return title;
 }
 
-// 音乐列表配置
-export const musicList: MusicItem[] = [
-  // 导入本地音乐文件
-  ...([
-    "兰纳罗合唱.mp3",
-    "大梦的曲调.mp3",
-    "恒那兰那（夜晚1）.mp3",
-    "恒那兰那（夜晚2）.mp3",
-    "无忧节.mp3",
-    "海祇之岛.mp3",
-    "溢彩华庭.mp3",
-    "轻链.mp3",
-    "须弥（翻新）.mp3",
-    "净善相继.mp3",
-    "希穆兰卡-赐福森林.mp3",
-    "幻想真境剧诗.mp3",
-    "恒那兰那（白天1）.mp3",
-    "未行之路.mp3",
-    "原神-蒙德.mp3",
-    "超炮2,ED1_哔哩哔哩_bilibili.mp3",
-    "超炮2,ED2.5_哔哩哔哩_bilibili.mp3",
-    "超炮2,ED2_哔哩哔哩_bilibili.mp3",
-    "超炮2,OP1_哔哩哔哩_bilibili.mp3",
-    "超炮2,OP2_哔哩哔哩_bilibili.mp3",
-    "超炮3,ED1_哔哩哔哩_bilibili.mp3",
-    "超炮3,ED2_哔哩哔哩_bilibili.mp3",
-    "超炮3,OP1_哔哩哔哩_bilibili.mp3",
-    "超炮3,OP2_哔哩哔哩_bilibili.mp3",
-    "超炮OVA,ED_哔哩哔哩_bilibili.mp3",
-    "超炮OVA,OP_哔哩哔哩_bilibili.mp3",
-    "风与牧歌之城,Disc,2,-蒲公英的国度（蒙德大世界）.mp3",
-    "only my railgun钢琴曲.mp3",
-    "something just like this.mp3",
-    "梦的光点.mp3",
-    "超炮1,ED1-1_哔哩哔哩_bilibili.mp3",
-    "超炮1,ED1-2_哔哩哔哩_bilibili.mp3",
-    "超炮1,ED2_哔哩哔哩_bilibili.mp3",
-    "超炮1,OP1_哔哩哔哩_bilibili.mp3",
-    "超炮1,OP2_哔哩哔哩_bilibili.mp3",
-    "超炮2,ED1.5(上琴)_哔哩哔哩_bilibili.mp3",
-    "超炮2,ED1.5（真上琴）_哔哩哔哩_bilibili.mp3",
-    "铃芽之旅-钢琴组曲.mp3",
-    "你的名字MV.mp3",
-    "千与千寻钢琴曲.mp3",
-    "夜航星.mp3",
-    "少年中国说.mp3",
-    "海德薇变奏曲.mp3",
-    "霍格沃兹主题曲.mp3",
-    "马步谣——双笙.mp3",
-    "dream it possible.mp3",
-    "千与千寻 与你同在.mp3",
-    "千与千寻英文歌曲.mp3",
-    "天气之子片中曲(1).mp3",
-    "将进酒-凤凰传奇.mp3",
-    "某科学的超电磁炮.mp3",
-    "铃芽之旅MV .mp3",
-    "annie wonderland.mp3",
-    "α波オルゴール - 最初から今まで.mp3",
-    "中国人民解放军军乐团 - 光荣啊!中国共青团.mp3",
-    "岳阳楼记.mp3",
-    "成都.mp3",
-    "未知歌手 - 军港之夜 (葫芦丝).mp3",
-    "罗大佑 - 童年.mp3",
-    "蓝天合唱团 - 让我们荡起双桨.mp3",
-    "铃芽之旅主题曲.mp3",
-    "陈奕迅 - 十年 (Live).mp3",
-    "雲翼星辰 - 黑暗森林.mp3",
-    "孤勇者.mp3",
-    "最伟大的作品.mp3",
-    "某科学的超电磁炮T.mp3"
-  ].map(filename => ({
+// 硬编码获取音乐文件名的备选列表
+// 这个列表只是作为备用，实际会通过客户端代码动态获取
+const fallbackMusicFiles = [
+  "兰纳罗合唱.mp3",
+  "大梦的曲调.mp3",
+  "恒那兰那（夜晚1）.mp3",
+  "恒那兰那（夜晚2）.mp3",
+  "无忧节.mp3",
+  "海祇之岛.mp3",
+  "溢彩华庭.mp3",
+  "轻链.mp3",
+  "须弥（翻新）.mp3",
+  "净善相继.mp3",
+  "希穆兰卡-赐福森林.mp3",
+  "幻想真境剧诗.mp3",
+  "恒那兰那（白天1）.mp3",
+  "未行之路.mp3",
+  "原神-蒙德.mp3",
+  "超炮2,ED1_哔哩哔哩_bilibili.mp3",
+  "超炮2,ED2.5_哔哩哔哩_bilibili.mp3",
+  "超炮2,ED2_哔哩哔哩_bilibili.mp3",
+  "超炮2,OP1_哔哩哔哩_bilibili.mp3",
+  "超炮2,OP2_哔哩哔哩_bilibili.mp3",
+  "超炮3,ED1_哔哩哔哩_bilibili.mp3",
+  "超炮3,ED2_哔哩哔哩_bilibili.mp3",
+  "超炮3,OP1_哔哩哔哩_bilibili.mp3",
+  "超炮3,OP2_哔哩哔哩_bilibili.mp3",
+  "超炮OVA,ED_哔哩哔哩_bilibili.mp3",
+  "超炮OVA,OP_哔哩哔哩_bilibili.mp3",
+  "only my railgun钢琴曲.mp3",
+  "something just like this.mp3",
+  "梦的光点.mp3",
+  "超炮1,ED1-1_哔哩哔哩_bilibili.mp3",
+  "超炮1,ED1-2_哔哩哔哩_bilibili.mp3",
+  "超炮1,ED2_哔哩哔哩_bilibili.mp3",
+  "超炮1,OP1_哔哩哔哩_bilibili.mp3",
+  "超炮1,OP2_哔哩哔哩_bilibili.mp3",
+  "超炮2,ED1.5(上琴)_哔哩哔哩_bilibili.mp3",
+  "超炮2,ED1.5（真上琴）_哔哩哔哩_bilibili.mp3",
+  "铃芽之旅-钢琴组曲.mp3",
+  "你的名字MV.mp3",
+  "千与千寻钢琴曲.mp3",
+  "夜航星.mp3",
+  "少年中国说.mp3",
+  "海德薇变奏曲.mp3",
+  "霍格沃兹主题曲.mp3",
+  "马步谣——双笙.mp3",
+  "dream it possible.mp3",
+  "千与千寻 与你同在.mp3",
+  "千与千寻英文歌曲.mp3",
+  "天气之子片中曲(1).mp3",
+  "将进酒-凤凰传奇.mp3",
+  "某科学的超电磁炮.mp3",
+  "铃芽之旅MV .mp3",
+  "annie wonderland.mp3",
+  "α波オルゴール - 最初から今まで.mp3",
+  "中国人民解放军军乐团 - 光荣啊!中国共青团.mp3",
+  "岳阳楼记.mp3",
+  "成都.mp3",
+  "未知歌手 - 军港之夜 (葫芦丝).mp3",
+  "罗大佑 - 童年.mp3",
+  "蓝天合唱团 - 让我们荡起双桨.mp3",
+  "铃芽之旅主题曲.mp3",
+  "陈奕迅 - 十年 (Live).mp3",
+  "雲翼星辰 - 黑暗森林.mp3",
+  "孤勇者.mp3",
+  "最伟大的作品.mp3",
+  "某科学的超电磁炮T.mp3"
+];
+
+// API接口获取音乐文件列表
+async function fetchMusicFiles(): Promise<string[]> {
+  // 在客户端环境下执行
+  if (typeof window !== 'undefined') {
+    try {
+      // 尝试从服务器端获取音乐文件列表
+      const response = await fetch('/assets/music-list.json');
+      if (response.ok) {
+        const data = await response.json();
+        return data.files || [];
+      }
+    } catch (error) {
+      console.error('获取音乐文件列表失败:', error);
+    }
+    
+    // 如果无法从服务器获取，则使用备选列表
+    return fallbackMusicFiles;
+  } else {
+    // 服务器端渲染时返回备选列表
+    return fallbackMusicFiles;
+  }
+}
+
+// 动态生成音乐列表
+export async function getMusicList(): Promise<MusicItem[]> {
+  const files = await fetchMusicFiles();
+  return files.map(filename => ({
     name: beautifyTitle(filename),
     artist: getArtistByFilename(filename),
-    url: `./assets/music/${filename}`,
+    url: `/assets/music/${filename}`,
     cover: getCoverByCategory(filename)
-  })))
-];
+  }));
+}
+
+// 导出默认音乐列表（用于初始化）
+export const musicList: MusicItem[] = fallbackMusicFiles.map(filename => ({
+  name: beautifyTitle(filename),
+  artist: getArtistByFilename(filename),
+  url: `/assets/music/${filename}`,
+  cover: getCoverByCategory(filename)
+}));

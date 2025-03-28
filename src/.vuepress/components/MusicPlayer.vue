@@ -96,7 +96,7 @@
 
 <script setup lang="ts">
 import { ref, computed, watchEffect, onMounted, nextTick } from 'vue';
-import { musicList } from '../music';
+import { musicList, getMusicList } from '../music';
 
 const props = defineProps({
   title: {
@@ -120,12 +120,28 @@ const searchQuery = ref('');
 const currentIndex = ref(-1);
 const currentPage = ref(1);
 const itemsPerPage = 10;
-
 const audioPlayer = ref(null);
+const dynamicMusicList = ref([...musicList]); // 初始化为默认音乐列表
+const isLoading = ref(false);
+
+// 组件加载时获取动态音乐列表
+onMounted(async () => {
+  try {
+    isLoading.value = true;
+    const musicItems = await getMusicList();
+    if (musicItems && musicItems.length > 0) {
+      dynamicMusicList.value = musicItems;
+    }
+  } catch (error) {
+    console.error('加载音乐列表失败:', error);
+  } finally {
+    isLoading.value = false;
+  }
+});
 
 // 根据分类和搜索过滤音乐列表
 const filteredMusicList = computed(() => {
-  let result = [...musicList];
+  let result = [...dynamicMusicList.value];
   
   // 分类过滤
   if (currentCategory.value !== 'all') {
@@ -183,11 +199,13 @@ const paginatedMusicList = computed(() => {
 const getOriginalIndex = (paginatedIndex) => {
   const start = (currentPage.value - 1) * itemsPerPage;
   const filteredIndex = start + paginatedIndex;
-  return musicList.findIndex(item => item === filteredMusicList.value[filteredIndex]);
+  return dynamicMusicList.value.findIndex(item => 
+    item === filteredMusicList.value[filteredIndex]
+  );
 };
 
 const currentTrack = computed(() => 
-  currentIndex.value >= 0 ? musicList[currentIndex.value] : null
+  currentIndex.value >= 0 ? dynamicMusicList.value[currentIndex.value] : null
 );
 
 const selectTrack = async (index: number) => {
