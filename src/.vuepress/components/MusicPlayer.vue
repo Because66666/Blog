@@ -124,6 +124,22 @@ const audioPlayer = ref(null);
 const dynamicMusicList = ref([...musicList]); // 初始化为默认音乐列表
 const isLoading = ref(false);
 
+// 处理音乐播放结束，播放下一首
+const handleTrackEnd = () => {
+  // 检查是否处于单曲循环模式
+  const mediaElement = audioPlayer.value?.$el?.querySelector('audio, video');
+  if (mediaElement?.loop) {
+    // 如果是单曲循环模式，不执行下一曲逻辑
+    return;
+  }
+  
+  // 不是单曲循环模式，播放下一首
+  if (currentIndex.value < dynamicMusicList.value.length - 1) {
+    // 还有下一首歌，播放下一首
+    selectTrack(currentIndex.value + 1);
+  }
+};
+
 // 组件加载时获取动态音乐列表
 onMounted(async () => {
   try {
@@ -132,10 +148,41 @@ onMounted(async () => {
     if (musicItems && musicItems.length > 0) {
       dynamicMusicList.value = musicItems;
     }
+    
+    // 在组件挂载后设置媒体元素的ended事件监听
+    nextTick(() => {
+      setupMediaElementListener();
+    });
   } catch (error) {
     console.error('加载音乐列表失败:', error);
   } finally {
     isLoading.value = false;
+  }
+});
+
+// 设置媒体元素的事件监听
+const setupMediaElementListener = () => {
+  // 延迟一点时间确保DOM已更新
+  setTimeout(() => {
+    if (audioPlayer.value && audioPlayer.value.$el) {
+      const mediaElement = audioPlayer.value.$el.querySelector('audio, video');
+      if (mediaElement) {
+        // 移除之前可能存在的监听
+        mediaElement.removeEventListener('ended', handleTrackEnd);
+        // 添加新的监听
+        mediaElement.addEventListener('ended', handleTrackEnd);
+        console.log('已设置音频结束事件监听器');
+      }
+    }
+  }, 500);
+};
+
+// 当前曲目改变时重新设置事件监听
+watchEffect(() => {
+  if (currentIndex.value >= 0) {
+    nextTick(() => {
+      setupMediaElementListener();
+    });
   }
 });
 
@@ -217,6 +264,8 @@ const selectTrack = async (index: number) => {
     try {
       const mediaElement = audioPlayer.value.$el.querySelector('audio, video');
       if (mediaElement) {
+        // 移除之前的事件监听
+        mediaElement.removeEventListener('ended', handleTrackEnd);
         // 暂停当前音乐
         mediaElement.pause();
         // 重置进度
@@ -239,6 +288,9 @@ const selectTrack = async (index: number) => {
       // 查找媒体元素并播放
       const mediaElement = audioPlayer.value.$el.querySelector('audio, video');
       if (mediaElement) {
+        // 添加结束事件监听
+        mediaElement.addEventListener('ended', handleTrackEnd);
+        
         // 强制加载新音频
         mediaElement.load();
         

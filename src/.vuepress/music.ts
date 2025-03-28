@@ -1,6 +1,3 @@
-import fs from 'fs';
-import path from 'path';
-
 interface MusicItem {
   name: string;
   artist: string;
@@ -160,7 +157,7 @@ async function fetchMusicFiles(): Promise<string[]> {
   if (typeof window !== 'undefined') {
     try {
       // 尝试从服务器端获取音乐文件列表
-      const response = await fetch('/assets/music-list.json');
+      const response = await fetch('./assets/music-list.json');
       if (response.ok) {
         const data = await response.json();
         return data.files || [];
