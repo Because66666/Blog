@@ -14,6 +14,11 @@ export default sidebar({
       link:"/portfolio",
     },
     {
+      text: "音乐",
+      icon: "music",
+      link: "/music",
+    },
+    {
       text:"编程历史",
       icon:"laptop-code",
       link:"/intro",
@@ -25,10 +30,6 @@ export default sidebar({
       link: "posts/",
       children: "structure",
     },
-    {
-      text: "音乐",
-      icon: "music",
-      link: "/music",
-    },
+
   ],
 });

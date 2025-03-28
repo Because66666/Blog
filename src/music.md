@@ -1,12 +1,12 @@
 ---
 home: true
-heroText: Because的音乐库
+heroText: false
 icon: music
-tagline: 放松心情，享受美妙的旋律吧！
+tagline: false
 ---
 
 <div class="music-container">
-  <MusicPlayer title="音乐收藏" />
+  <MusicPlayer title="Because的音乐库" />
 </div>
 
 <style>
