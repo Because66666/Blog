@@ -1,0 +1,52 @@
+name: 为cloud-fare构建
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  deploy-cloud-pages:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          # 如果你文档需要 Git 子模块，取消注释下一行
+          # submodules: true
+
+      - name: 配置 Git
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: 创建并切换到 cloud-pages 分支
+        run: |
+          # 检查远程分支是否存在
+          if git ls-remote --heads origin cloud-pages | grep cloud-pages; then
+            # 如果存在，切换到该分支
+            git checkout -b cloud-pages origin/cloud-pages
+          else
+            # 如果不存在，创建新分支
+            git checkout -b cloud-pages
+          fi
+          
+          # 确保与main分支同步
+          git merge origin/main --allow-unrelated-histories -X theirs
+
+      - name: 修改配置文件
+        run: |
+          # 修改 config.ts 中的 base 配置
+          sed -i 's|base: "/Blog/"|base: "/"|g' src/.vuepress/config.ts
+          
+          # 提交更改
+          git add src/.vuepress/config.ts
+          git commit -m "更新配置：将 base 路径从 /Blog/ 改为 /"
+
+      - name: 推送到 cloud-pages 分支
+        run: |
+          git push -f origin cloud-pages
