@@ -1,0 +1,5 @@
+
+User-agent:*
+Disallow:
+
+Sitemap: https://because66666.github.io/Blog/sitemap.xml
