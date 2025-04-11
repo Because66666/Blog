@@ -50,3 +50,29 @@ jobs:
       - name: 推送到 cloud-pages 分支
         run: |
           git push -f origin cloud-pages
+
+      - name: 设置 Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: 安装依赖
+        run: |
+          corepack enable
+          npm ci
+
+      - name: 构建文档
+        env:
+          NODE_OPTIONS: --max_old_space_size=8192
+        run: |
+          npm run docs:build
+          > src/.vuepress/dist/.nojekyll
+
+      - name: 部署文档到 cloud-gh-pages
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          # 部署到 cloud-gh-pages 分支
+          branch: cloud-gh-pages
+          folder: src/.vuepress/dist
+      
