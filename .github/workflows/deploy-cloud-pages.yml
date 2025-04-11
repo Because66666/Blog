@@ -43,10 +43,41 @@ jobs:
           # 修改 config.ts 中的 base 配置
           sed -i 's|base: "/Blog/"|base: "/"|g' src/.vuepress/config.ts
           
-          # 提交更改
+          # 检查是否有更改需要提交
           git add src/.vuepress/config.ts
-          git commit -m "更新配置：将 base 路径从 /Blog/ 改为 /"
+          if git diff --cached --quiet; then
+            echo "没有更改需要提交，跳过提交步骤"
+          else
+            # 提交更改
+            git commit -m "更新配置：将 base 路径从 /Blog/ 改为 /"
+          fi
 
       - name: 推送到 cloud-pages 分支
         run: |
           git push -f origin cloud-pages
+
+      - name: 设置 Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: 安装依赖
+        run: |
+          corepack enable
+          npm ci
+
+      - name: 构建文档
+        env:
+          NODE_OPTIONS: --max_old_space_size=8192
+        run: |
+          npm run docs:build
+          > src/.vuepress/dist/.nojekyll
+
+      - name: 部署文档到 cloud-gh-pages
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          # 部署到 cloud-gh-pages 分支
+          branch: cloud-gh-pages
+          folder: src/.vuepress/dist
+      
