@@ -43,9 +43,14 @@ jobs:
           # 修改 config.ts 中的 base 配置
           sed -i 's|base: "/Blog/"|base: "/"|g' src/.vuepress/config.ts
           
-          # 提交更改
+          # 检查是否有更改需要提交
           git add src/.vuepress/config.ts
-          git commit -m "更新配置：将 base 路径从 /Blog/ 改为 /"
+          if git diff --cached --quiet; then
+            echo "没有更改需要提交，跳过提交步骤"
+          else
+            # 提交更改
+            git commit -m "更新配置：将 base 路径从 /Blog/ 改为 /"
+          fi
 
       - name: 推送到 cloud-pages 分支
         run: |
